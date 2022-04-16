@@ -12,6 +12,10 @@ public enum Igralec {
 		return (this == CRNI ? Polje.CRNO : Polje.BELO);
 	}
 	
+	public Polje getPoljeNasprotnik() {
+		return (this == CRNI ? Polje.BELO : Polje.CRNO);
+	}
+	
 	@Override
 	public String toString() {
 		return (this == CRNI ? "CRNI" : "BELI");
