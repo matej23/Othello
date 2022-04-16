@@ -8,7 +8,6 @@ public enum Igralec {
 	}
 
 	public Polje getPolje() {
-		// ne štekamo :( 
 		return (this == CRNI ? Polje.CRNO : Polje.BELO);
 	}
 	

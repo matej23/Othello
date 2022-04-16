@@ -41,7 +41,7 @@ public class Igra {
 	
 	//zelo je nadlezno, da se stvari ne da pognati :((
 	
-	public List<Poteza> poteze(Igra igra) {
+	public List<Poteza> poteze() {
 		LinkedList<Poteza> ps = new LinkedList<Poteza>();
 		for (int i = 0; i < N; i++) {
 			for (int j = 0; j < N; j++) {
@@ -49,8 +49,8 @@ public class Igra {
 				if (plosca[i][j] == Polje.PRAZNO) {
 					
 					//najde barvo polja za oba igralca
-					Polje polje_nasprotnik = igra.naPotezi().nasprotnik().getPoljeNasprotnik();
-					Polje polje_igralca = igra.naPotezi().nasprotnik().getPolje();
+					Polje polje_nasprotnik = naPotezi().nasprotnik().getPoljeNasprotnik();
+					Polje polje_igralca = naPotezi().nasprotnik().getPolje();
 					
 					//za prazna polja gledamo v vse mozne smeri
 					
@@ -134,16 +134,42 @@ public class Igra {
 	}
 	// TO DO, zmaga? 
 	// (ali poteze = [] & plosca prazna ali plosca polna, zmaga ...
-	// !! dodan je spremenljivka -igra- preko katere zgornja funkcija -poteze- dostopa do podatka o igralcu !!
-	public Stanje stanje(Igra igra) {
-		if (poteze(igra) == null) return Stanje.ZMAGA_CRNI;
-		else {
-			return Stanje.V_TEKU;
+	
+	public Stanje stanje() {
+		int stevec_crni = 0;
+		int stevec_beli = 0;
+		for (int i = 0; i < N; i++) {
+			for (int j = 0; j < N; j++) {
+				if (plosca[i][j] == Polje.CRNO) stevec_crni++;
+				else if (plosca[i][j] == Polje.BELO) stevec_beli++;
+				else {
+					// V tem primeru niso vsa polja na plošči zapolnjena:
+					if (poteze() == null && naPotezi() == Igralec.CRNI) {
+						return Stanje.ZMAGA_BELI;
+					}
+					else if (poteze() == null && naPotezi() == Igralec.BELI) {
+						return Stanje.ZMAGA_CRNI;
+					}
+					else return Stanje.V_TEKU;
+				}
+			}
 		}
+		if (stevec_crni > stevec_beli) return Stanje.ZMAGA_CRNI;
+		else if (stevec_crni < stevec_beli) return Stanje.ZMAGA_BELI;
+		else return Stanje.NEODLOCENO;
+		
+		
 	}
 	
 //	public boolean odigraj(Poteza poteza) {
-//		
+//		if (poteze().contains(poteza)) {
+//			plosca[poteza.getX()][poteza.getY()] = TODO
+//			naPotezi = naPotezi.nasprotnik();
+//			return true;
+//		}
+//		else {
+//			return false;
+//		}
 //	}
 	
 }
