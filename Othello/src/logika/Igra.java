@@ -132,18 +132,42 @@ public class Igra {
 		}
 		return ps;
 	}
-	// TO DO, zmaga? 
-	// (ali poteze = [] & plosca prazna ali plosca polna, zmaga ...
-	// !! dodan je spremenljivka -igra- preko katere zgornja funkcija -poteze- dostopa do podatka o igralcu !!
+	
 	public Stanje stanje() {
-		if (poteze() == null) return Stanje.ZMAGA_CRNI;
-		else {
-			return Stanje.V_TEKU;
+		int stevec_crni = 0;
+		int stevec_beli = 0;
+		for (int i = 0; i < N; i++) {
+			for (int j = 0; j < N; j++) {
+				if (plosca[i][j] == Polje.CRNO) stevec_crni++;
+				else if (plosca[i][j] == Polje.BELO) stevec_beli++;
+				else {
+					// V tem primeru niso vsa polja na plošči zapolnjena:
+					if (poteze() == null && naPotezi() == Igralec.CRNI) {
+						return Stanje.ZMAGA_BELI;
+					}
+					else if (poteze() == null && naPotezi() == Igralec.BELI) {
+						return Stanje.ZMAGA_CRNI;
+					}
+					else return Stanje.V_TEKU;
+				}
+			}
 		}
+		if (stevec_crni > stevec_beli) return Stanje.ZMAGA_CRNI;
+		else if (stevec_crni < stevec_beli) return Stanje.ZMAGA_BELI;
+		else return Stanje.NEODLOCENO;
+		
+		
 	}
 	
 //	public boolean odigraj(Poteza poteza) {
-//		
+//	if (poteze().contains(poteza)) {
+//		plosca[poteza.getX()][poteza.getY()] = TODO
+//		naPotezi = naPotezi.nasprotnik();
+//		return true;
 //	}
+//	else {
+//		return false;
+//	}
+//}
 	
 }
