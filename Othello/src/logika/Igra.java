@@ -219,4 +219,21 @@ public class Igra {
 
 	}
 	
+	public void plosca_izpis(Polje[][] plosca) {
+		for (Polje[] polja_i : plosca) {
+			for (Polje polja_j : polja_i) {
+				if (polja_j == Polje.CRNO) {
+					System.out.print("B");
+				}
+				else if (polja_j == Polje.BELO) {
+					System.out.print("W");
+				}
+				else {
+					System.out.print("O");
+				}
+			}
+			System.out.print("\n");
+		}
+	}
+	
 }
