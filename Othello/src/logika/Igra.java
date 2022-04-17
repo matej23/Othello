@@ -59,92 +59,113 @@ public class Igra {
 					//////////////////////////////////////////////////// enosmerne
 					int gor = 1;
 					LinkedList<Poteza> gor_ps = new LinkedList<Poteza>();
-					while (i - gor >= 0 && plosca[i - gor][j] == polje_nasprotnik) {
+					while ((i - gor > 0 ) && (plosca[i - gor][j] == polje_nasprotnik)) {
 						gor_ps.add(new Poteza(i - gor, j));
-						++gor;
-					}
-					int gor_final = gor + 1;
-					if (i - gor_final >= 0 && plosca[i - gor_final][j] == polje_igralca) {
-						ps.put(new Poteza(i, j), gor_ps);
+						if (i - (gor + 1) >= 0 && plosca[i - (gor + 1)][j] == polje_igralca) {
+							ps.put(new Poteza(i, j), gor_ps);
+							break;
+						}
+						else {
+							++gor;
+						}
 					}
 					
 					int dol = 1;
 					LinkedList<Poteza> dol_ps = new LinkedList<Poteza>();
 					while (i + dol < 8 && plosca[i + dol][j] == polje_nasprotnik) {
 						dol_ps.add(new Poteza(i + dol, j));
-						++dol;
+						if (i + (dol + 1) < 8 && plosca[i + (dol + 1)][j] == polje_igralca) {
+							ps.put(new Poteza(i, j), dol_ps);
+							break;
+						}
+						else {
+							++dol;
+						}
 					}
-					int dol_final = dol + 1;
-					if (i + dol_final < 8 && plosca[i + dol_final][j] == polje_igralca) {
-						ps.put(new Poteza(i, j), dol_ps);
-					}
-					
+
 					int desno = 1;
 					LinkedList<Poteza> desno_ps = new LinkedList<Poteza>();
 					while (j + desno < 8 && plosca[i][j + desno] == polje_nasprotnik) {
 						desno_ps.add(new Poteza(i, j + desno));
-						++desno;
-					}
-					int desno_final = desno + 1;
-					if (j + desno_final < 8 && plosca[i][j + desno_final] == polje_igralca) {
-						ps.put(new Poteza(i, j), desno_ps);
+						if (j + (desno + 1) < 8 && plosca[i][j + (desno + 1)] == polje_igralca) {
+							ps.put(new Poteza(i, j), desno_ps);
+							break;
+						}
+						else {
+							++desno;
+						}
 					}
 					
 					int levo = 1;
 					LinkedList<Poteza> levo_ps = new LinkedList<Poteza>();
 					while (j - levo >= 0 && plosca[i][j - levo] == polje_nasprotnik) {
 						levo_ps.add(new Poteza(i, j - levo));
-						++levo;
-					}
-					int levo_final = levo + 1;
-					if (j - levo_final >= 0 && plosca[i][j - levo_final] == polje_igralca) {
-						ps.put(new Poteza(i, j), levo_ps);
+						if (j - (levo + 1) >= 0 && plosca[i][j - (levo + 1)] == polje_igralca) {
+							ps.put(new Poteza(i, j), levo_ps);
+							break;
+						}
+						else {
+							++levo;
+						}
 					}
 					
 					/////////////////////////////////////////////////////////////////diagonale
+					
 					int desno_dol= 1; 
 					LinkedList<Poteza> desno_dol_ps = new LinkedList<Poteza>();
 					while (i + desno_dol < 8 && j + desno_dol < 8 && plosca[i + desno_dol][j + desno_dol] == polje_nasprotnik) {
 						desno_dol_ps.add(new Poteza(i + desno_dol, j + desno_dol));
-						++desno_dol;
+	
+						if (i + (desno_dol + 1) < 8 && j + (desno_dol + 1) < 8 && plosca[i + (desno_dol + 1)][j + (desno_dol + 1)] == polje_igralca) {
+							ps.put(new Poteza(i, j), desno_dol_ps);
+							break;
+						}
+						else {
+							++desno_dol;
+						}
 					}
-					int desno_dol_final = desno_dol + 1;
-					if (i + desno_dol_final < 8 && j + desno_dol_final < 8 && plosca[i + desno_dol_final][j + desno_dol_final] == polje_igralca) {
-						ps.put(new Poteza(i, j), desno_dol_ps);
-					}
+					
 					
 					int desno_gor= 1; 
 					LinkedList<Poteza> desno_gor_ps = new LinkedList<Poteza>();
 					while (i - desno_gor >= 0 && j + desno_gor < 8 && plosca[i - desno_gor][j + desno_gor] == polje_nasprotnik) {
 						desno_gor_ps.add(new Poteza(i  - desno_gor, j + desno_gor));
-						++desno_gor;
-					}
-					int desno_gor_final = desno_gor + 1;
-					if (i - desno_gor_final >= 0 && j + desno_gor_final < 8 && plosca[i - desno_gor_final][j + desno_gor_final] == polje_igralca) {
-						ps.put(new Poteza(i, j), desno_gor_ps);
+						
+						if (i - (desno_gor + 1) >= 0 && j + (desno_gor + 1) < 8 && plosca[i - (desno_gor + 1)][j + (desno_gor + 1)] == polje_igralca) {
+							ps.put(new Poteza(i, j), desno_gor_ps);
+							break;
+						}
+						else {
+							++desno_gor;
+						}
 					}
 					
 					int levo_gor= 1; 
 					LinkedList<Poteza> levo_gor_ps = new LinkedList<Poteza>();
 					while (i - levo_gor >= 0 && j - levo_gor >= 0  && plosca[i - levo_gor][j - levo_gor] == polje_nasprotnik) {
 						levo_gor_ps.add(new Poteza(i  - levo_gor, j - levo_gor));
-						++levo_gor;
-					}
-					int levo_gor_final = levo_gor + 1;
-					if (i - levo_gor_final >= 0 && j - levo_gor_final >= 0 && plosca[i - levo_gor_final][j - levo_gor_final] == polje_igralca) {
-						ps.put(new Poteza(i, j), levo_gor_ps);
-					}
 					
+						if (i - (levo_gor + 1) >= 0 && j - (levo_gor + 1) >= 0 && plosca[i - (levo_gor + 1)][j - (levo_gor + 1)] == polje_igralca) {
+							ps.put(new Poteza(i, j), levo_gor_ps);
+						}
+						else {
+							++levo_gor;
+						}
+					}
+
 					int levo_dol= 1;
 					LinkedList<Poteza> levo_dol_ps = new LinkedList<Poteza>();
 					while (i + levo_dol < 8  && j - levo_dol >= 0  && plosca[i + levo_dol][j - levo_dol] == polje_nasprotnik) {
 						levo_dol_ps.add(new Poteza(i  + levo_dol, j - levo_dol));
-						++levo_dol;
+			
+						if (i + (levo_dol + 1)< 8 && j - (levo_dol + 1)>= 0 && plosca[i + (levo_dol + 1)][j - (levo_dol + 1)] == polje_igralca) {
+							ps.put(new Poteza(i, j), levo_dol_ps);
+						}
+						else {
+							++levo_dol;
+						}
 					}
-					int levo_dol_final = levo_dol + 1;
-					if (i + levo_dol_final < 8 && j - levo_dol_final >= 0 && plosca[i + levo_dol_final][j - levo_dol_final] == polje_igralca) {
-						ps.put(new Poteza(i, j), levo_dol_ps);
-					}
+
 				}
 			}
 		}
