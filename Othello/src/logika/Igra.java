@@ -2,7 +2,6 @@ package logika;
 
 import java.util.HashMap;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.Map;
 
 import splosno.Poteza;
@@ -43,8 +42,8 @@ public class Igra {
 	
 	//zelo je nadlezno, da se stvari ne da pognati :((
 	
-	public Map<Poteza, List<Poteza>> poteze() {
-		Map<Poteza, List<Poteza>> ps = new HashMap<Poteza, List<Poteza>>();
+	public Map<Poteza, LinkedList<Poteza>> poteze() {
+		Map<Poteza, LinkedList<Poteza>> ps = new HashMap<Poteza, LinkedList<Poteza>>();
 		// LinkedList<Poteza> ps = new LinkedList<Poteza>();
 		for (int i = 0; i < N; i++) {
 			for (int j = 0; j < N; j++) {
@@ -52,8 +51,8 @@ public class Igra {
 				if (plosca[i][j] == Polje.PRAZNO) {
 					
 					//najde barvo polja za oba igralca
-					Polje polje_nasprotnik = naPotezi().nasprotnik().getPoljeNasprotnik();
-					Polje polje_igralca = naPotezi().nasprotnik().getPolje();
+					Polje polje_nasprotnik = naPotezi().getPoljeNasprotnik();
+					Polje polje_igralca = naPotezi().getPolje();
 					
 					//za prazna polja gledamo v vse mozne smeri
 					
@@ -178,15 +177,25 @@ public class Igra {
 		
 	}
 	
-//	public boolean odigraj(Poteza poteza) {
-//	if (poteze().contains(poteza)) {
-//		plosca[poteza.getX()][poteza.getY()] = TODO
-//		naPotezi = naPotezi.nasprotnik();
-//		return true;
-//	}
-//	else {
-//		return false;
-//	}
-//}
+	public boolean odigraj(Poteza poteza) {
+		LinkedList<Poteza> posledica = poteze().get(poteza);
+		//ce .get(key) ne najde value vrne null
+		if (posledica == null) {
+			return false;
+		}
+		
+		else {
+			//nasli potezo med moznimi
+			plosca[poteza.getX()][poteza.getY()] = naPotezi.getPolje();
+			
+			for (Poteza poteza_posledica : posledica) {
+				plosca[poteza_posledica.getX()][poteza_posledica.getY()] = naPotezi.getPolje();
+			}
+			
+		naPotezi = naPotezi.nasprotnik();
+		return true;
+		}
+
+	}
 	
 }
