@@ -1,4 +1,4 @@
-package logika;
+/*package logika;
 
 import java.util.LinkedList;
 import java.util.Map;
@@ -37,6 +37,10 @@ public class Test {
 		System.out.print("\n");
 		Poteza poteza_2 = new Poteza(7,7);
 		System.out.print(igra.odigraj(poteza_2));
+		System.out.print("\n\n");
+		polje_izpis(igra.getPlosca());
+		System.out.print("\n");
+		poteze_izpis(igra.poteze());
 	}
 	
 	public static void polje_izpis(Polje[][] polje) {
@@ -73,3 +77,4 @@ public class Test {
 		}
 	}
 }
+*/

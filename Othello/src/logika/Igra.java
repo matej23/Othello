@@ -44,7 +44,6 @@ public class Igra {
 	
 	public Map<Poteza, LinkedList<Poteza>> poteze() {
 		Map<Poteza, LinkedList<Poteza>> ps = new HashMap<Poteza, LinkedList<Poteza>>();
-		// LinkedList<Poteza> ps = new LinkedList<Poteza>();
 		for (int i = 0; i < N; i++) {
 			for (int j = 0; j < N; j++) {
 				//nasli prazna polja
@@ -59,11 +58,12 @@ public class Igra {
 					//////////////////////////////////////////////////// enosmerne
 					int gor = 1;
 					LinkedList<Poteza> gor_ps = new LinkedList<Poteza>();
-					while ((i - gor > 0 ) && (plosca[i - gor][j] == polje_nasprotnik)) {
+					while ((i - gor >= 0 ) && (plosca[i - gor][j] == polje_nasprotnik)) {
 						gor_ps.add(new Poteza(i - gor, j));
+						
 						if (i - (gor + 1) >= 0 && plosca[i - (gor + 1)][j] == polje_igralca) {
 							ps.put(new Poteza(i, j), gor_ps);
-							break;
+							break;	
 						}
 						else {
 							++gor;
@@ -72,8 +72,9 @@ public class Igra {
 					
 					int dol = 1;
 					LinkedList<Poteza> dol_ps = new LinkedList<Poteza>();
-					while (i + dol < 8 && plosca[i + dol][j] == polje_nasprotnik) {
+					while ((i + dol < 8) && plosca[i + dol][j] == polje_nasprotnik) {
 						dol_ps.add(new Poteza(i + dol, j));
+						
 						if (i + (dol + 1) < 8 && plosca[i + (dol + 1)][j] == polje_igralca) {
 							ps.put(new Poteza(i, j), dol_ps);
 							break;
@@ -87,6 +88,7 @@ public class Igra {
 					LinkedList<Poteza> desno_ps = new LinkedList<Poteza>();
 					while (j + desno < 8 && plosca[i][j + desno] == polje_nasprotnik) {
 						desno_ps.add(new Poteza(i, j + desno));
+						
 						if (j + (desno + 1) < 8 && plosca[i][j + (desno + 1)] == polje_igralca) {
 							ps.put(new Poteza(i, j), desno_ps);
 							break;
@@ -100,6 +102,7 @@ public class Igra {
 					LinkedList<Poteza> levo_ps = new LinkedList<Poteza>();
 					while (j - levo >= 0 && plosca[i][j - levo] == polje_nasprotnik) {
 						levo_ps.add(new Poteza(i, j - levo));
+						
 						if (j - (levo + 1) >= 0 && plosca[i][j - (levo + 1)] == polje_igralca) {
 							ps.put(new Poteza(i, j), levo_ps);
 							break;
@@ -115,7 +118,7 @@ public class Igra {
 					LinkedList<Poteza> desno_dol_ps = new LinkedList<Poteza>();
 					while (i + desno_dol < 8 && j + desno_dol < 8 && plosca[i + desno_dol][j + desno_dol] == polje_nasprotnik) {
 						desno_dol_ps.add(new Poteza(i + desno_dol, j + desno_dol));
-	
+						
 						if (i + (desno_dol + 1) < 8 && j + (desno_dol + 1) < 8 && plosca[i + (desno_dol + 1)][j + (desno_dol + 1)] == polje_igralca) {
 							ps.put(new Poteza(i, j), desno_dol_ps);
 							break;
@@ -130,7 +133,7 @@ public class Igra {
 					LinkedList<Poteza> desno_gor_ps = new LinkedList<Poteza>();
 					while (i - desno_gor >= 0 && j + desno_gor < 8 && plosca[i - desno_gor][j + desno_gor] == polje_nasprotnik) {
 						desno_gor_ps.add(new Poteza(i  - desno_gor, j + desno_gor));
-						
+				
 						if (i - (desno_gor + 1) >= 0 && j + (desno_gor + 1) < 8 && plosca[i - (desno_gor + 1)][j + (desno_gor + 1)] == polje_igralca) {
 							ps.put(new Poteza(i, j), desno_gor_ps);
 							break;
