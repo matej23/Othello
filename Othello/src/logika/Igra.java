@@ -62,7 +62,16 @@ public class Igra {
 						gor_ps.add(new Poteza(i - gor, j));
 						
 						if (i - (gor + 1) >= 0 && plosca[i - (gor + 1)][j] == polje_igralca) {
-							ps.put(new Poteza(i, j), gor_ps);
+							if (ps.get(new Poteza(i,j)) == null) {
+								ps.put(new Poteza(i, j), gor_ps);
+							}
+							else {
+								LinkedList<Poteza> obstojeci = ps.get(new Poteza(i, j));
+								for (Poteza poteza : gor_ps) {
+									obstojeci.add(poteza);
+								}
+								ps.put(new Poteza(i,j), obstojeci);
+							}
 							break;	
 						}
 						else {
@@ -76,21 +85,39 @@ public class Igra {
 						dol_ps.add(new Poteza(i + dol, j));
 						
 						if (i + (dol + 1) < 8 && plosca[i + (dol + 1)][j] == polje_igralca) {
-							ps.put(new Poteza(i, j), dol_ps);
+							if (ps.get(new Poteza(i,j)) == null) {
+								ps.put(new Poteza(i, j), dol_ps);
+							}
+							else {
+								LinkedList<Poteza> obstojeci = ps.get(new Poteza(i, j));
+								for (Poteza poteza : dol_ps) {
+									obstojeci.add(poteza);
+								}
+								ps.put(new Poteza(i,j), obstojeci);
+							}
 							break;
 						}
 						else {
 							++dol;
 						}
 					}
-
+					
 					int desno = 1;
 					LinkedList<Poteza> desno_ps = new LinkedList<Poteza>();
 					while (j + desno < 8 && plosca[i][j + desno] == polje_nasprotnik) {
 						desno_ps.add(new Poteza(i, j + desno));
 						
 						if (j + (desno + 1) < 8 && plosca[i][j + (desno + 1)] == polje_igralca) {
-							ps.put(new Poteza(i, j), desno_ps);
+							if (ps.get(new Poteza(i,j)) == null) {
+								ps.put(new Poteza(i, j), desno_ps);
+							}
+							else {
+								LinkedList<Poteza> obstojeci = ps.get(new Poteza(i, j));
+								for (Poteza poteza : desno_ps) {
+									obstojeci.add(poteza);
+								}
+								ps.put(new Poteza(i,j), obstojeci);
+							}
 							break;
 						}
 						else {
@@ -104,7 +131,16 @@ public class Igra {
 						levo_ps.add(new Poteza(i, j - levo));
 						
 						if (j - (levo + 1) >= 0 && plosca[i][j - (levo + 1)] == polje_igralca) {
-							ps.put(new Poteza(i, j), levo_ps);
+							if (ps.get(new Poteza(i,j)) == null) {
+								ps.put(new Poteza(i, j), levo_ps);
+							}
+							else {
+								LinkedList<Poteza> obstojeci = ps.get(new Poteza(i, j));
+								for (Poteza poteza : levo_ps) {
+									obstojeci.add(poteza);
+								}
+								ps.put(new Poteza(i,j), obstojeci);
+							}
 							break;
 						}
 						else {
@@ -120,7 +156,16 @@ public class Igra {
 						desno_dol_ps.add(new Poteza(i + desno_dol, j + desno_dol));
 						
 						if (i + (desno_dol + 1) < 8 && j + (desno_dol + 1) < 8 && plosca[i + (desno_dol + 1)][j + (desno_dol + 1)] == polje_igralca) {
-							ps.put(new Poteza(i, j), desno_dol_ps);
+							if (ps.get(new Poteza(i,j)) == null) {
+								ps.put(new Poteza(i, j), desno_dol_ps);
+							}
+							else {
+								LinkedList<Poteza> obstojeci = ps.get(new Poteza(i, j));
+								for (Poteza poteza : desno_dol_ps) {
+									obstojeci.add(poteza);
+								}
+								ps.put(new Poteza(i,j), obstojeci);
+							}
 							break;
 						}
 						else {
@@ -135,7 +180,16 @@ public class Igra {
 						desno_gor_ps.add(new Poteza(i  - desno_gor, j + desno_gor));
 				
 						if (i - (desno_gor + 1) >= 0 && j + (desno_gor + 1) < 8 && plosca[i - (desno_gor + 1)][j + (desno_gor + 1)] == polje_igralca) {
-							ps.put(new Poteza(i, j), desno_gor_ps);
+							if (ps.get(new Poteza(i,j)) == null) {
+								ps.put(new Poteza(i, j), desno_gor_ps);
+							}
+							else {
+								LinkedList<Poteza> obstojeci = ps.get(new Poteza(i, j));
+								for (Poteza poteza : desno_gor_ps) {
+									obstojeci.add(poteza);
+								}
+								ps.put(new Poteza(i,j), obstojeci);
+							}
 							break;
 						}
 						else {
@@ -149,7 +203,17 @@ public class Igra {
 						levo_gor_ps.add(new Poteza(i  - levo_gor, j - levo_gor));
 					
 						if (i - (levo_gor + 1) >= 0 && j - (levo_gor + 1) >= 0 && plosca[i - (levo_gor + 1)][j - (levo_gor + 1)] == polje_igralca) {
-							ps.put(new Poteza(i, j), levo_gor_ps);
+							if (ps.get(new Poteza(i,j)) == null) {
+								ps.put(new Poteza(i, j), levo_gor_ps);
+							}
+							else {
+								LinkedList<Poteza> obstojeci = ps.get(new Poteza(i, j));
+								for (Poteza poteza : levo_gor_ps) {
+									obstojeci.add(poteza);
+								}
+								ps.put(new Poteza(i,j), obstojeci);
+							}
+							break;
 						}
 						else {
 							++levo_gor;
@@ -161,8 +225,18 @@ public class Igra {
 					while (i + levo_dol < 8  && j - levo_dol >= 0  && plosca[i + levo_dol][j - levo_dol] == polje_nasprotnik) {
 						levo_dol_ps.add(new Poteza(i  + levo_dol, j - levo_dol));
 			
-						if (i + (levo_dol + 1)< 8 && j - (levo_dol + 1)>= 0 && plosca[i + (levo_dol + 1)][j - (levo_dol + 1)] == polje_igralca) {
-							ps.put(new Poteza(i, j), levo_dol_ps);
+						if (i + (levo_dol + 1) < 8 && j - (levo_dol + 1)>= 0 && plosca[i + (levo_dol + 1)][j - (levo_dol + 1)] == polje_igralca) {
+							if (ps.get(new Poteza(i,j)) == null) {
+								ps.put(new Poteza(i, j), levo_dol_ps);
+							}
+							else {
+								LinkedList<Poteza> obstojeci = ps.get(new Poteza(i, j));
+								for (Poteza poteza : levo_dol_ps) {
+									obstojeci.add(poteza);
+								}
+								ps.put(new Poteza(i,j), obstojeci);
+							}
+							break;
 						}
 						else {
 							++levo_dol;
@@ -197,7 +271,6 @@ public class Igra {
 		if (stevec_crni > stevec_beli) return Stanje.ZMAGA_CRNI;
 		else if (stevec_crni < stevec_beli) return Stanje.ZMAGA_BELI;
 		else return Stanje.NEODLOCENO;
-		
 		
 	}
 	

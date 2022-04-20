@@ -21,7 +21,7 @@ public class Test {
 		poteze_izpis(igra.poteze());
 		
 		System.out.print("\n");
-		Poteza poteza = new Poteza(3,2);
+		Poteza poteza = new Poteza(5,4);
 		System.out.print(igra.odigraj(poteza));
 		System.out.print("\n\n");
 		
@@ -77,4 +77,5 @@ public class Test {
 		}
 	}
 }
+
 */
