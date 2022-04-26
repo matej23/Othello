@@ -35,27 +35,26 @@ public class Igra {
 		return plosca;
 	}
 
-	
-	// TO DO :(, igralec spremenljivka?
-	// za vsako polje pogledamo ali je sosednji zeton nasprotnikov 
-	// ce je v isti smeri gledamo toliko casa dokler ne pridemo do nasega ali do roba/praznega polja
-	
-	//zelo je nadlezno, da se stvari ne da pognati :((
+	/*
+	funkcija najde vse možne poteze in jih zapiše v slovar,
+	v katerem je pri vsaki potezi seznam žetonov, ki se bodo obrnili, če opravimo to potezo
+	*/
 	
 	public Map<Poteza, LinkedList<Poteza>> poteze() {
 		Map<Poteza, LinkedList<Poteza>> ps = new HashMap<Poteza, LinkedList<Poteza>>();
 		for (int i = 0; i < N; i++) {
 			for (int j = 0; j < N; j++) {
-				//nasli prazna polja
 				if (plosca[i][j] == Polje.PRAZNO) {
 					
-					//najde barvo polja za oba igralca
+					// najdemo barvo polja za oba igralca
 					Polje polje_nasprotnik = naPotezi().getPoljeNasprotnik();
 					Polje polje_igralca = naPotezi().getPolje();
 					
-					//za prazna polja gledamo v vse mozne smeri
+					// pogledamo v vse možne smeri:
 					
-					//////////////////////////////////////////////////// enosmerne
+					//--------------------------------------------------- 
+					// horizontalne/vertikalne smeri
+
 					int gor = 1;
 					LinkedList<Poteza> gor_ps = new LinkedList<Poteza>();
 					while ((i - gor >= 0 ) && (plosca[i - gor][j] == polje_nasprotnik)) {
@@ -148,7 +147,8 @@ public class Igra {
 						}
 					}
 					
-					/////////////////////////////////////////////////////////////////diagonale
+					//--------------------------------------------------- 
+					// diagonalne smeri
 					
 					int desno_dol= 1; 
 					LinkedList<Poteza> desno_dol_ps = new LinkedList<Poteza>();
@@ -276,13 +276,12 @@ public class Igra {
 	
 	public boolean odigraj(Poteza poteza) {
 		LinkedList<Poteza> posledica = poteze().get(poteza);
-		//ce .get(key) ne najde value vrne null
+		// če poteza ni mogoča
 		if (posledica == null) {
 			return false;
 		}
 		
 		else {
-			//nasli potezo med moznimi
 			plosca[poteza.getX()][poteza.getY()] = naPotezi.getPolje();
 			
 			for (Poteza poteza_posledica : posledica) {
@@ -293,23 +292,6 @@ public class Igra {
 		return true;
 		}
 
-	}
-	
-	public void plosca_izpis(Polje[][] plosca) {
-		for (Polje[] polja_i : plosca) {
-			for (Polje polja_j : polja_i) {
-				if (polja_j == Polje.CRNO) {
-					System.out.print("B");
-				}
-				else if (polja_j == Polje.BELO) {
-					System.out.print("W");
-				}
-				else {
-					System.out.print("O");
-				}
-			}
-			System.out.print("\n");
-		}
 	}
 	
 }

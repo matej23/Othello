@@ -94,6 +94,7 @@ public class Vodja {
 		while (true) {
 			Igralec igralec = igra.naPotezi();
 			
+			plosca_izpis(igra.getPlosca());
 			poteze_izpis(igra.poteze());
 			System.out.print("\n");
 			
@@ -103,7 +104,7 @@ public class Vodja {
 			String s = r.readLine();
 			int i = s.indexOf (' '); 
 			if (i == -1 || i  == s.length()) { 
-				System.out.println("Napacen format"); continue; 
+				System.out.println("Napačen format"); continue; 
 			}
 			String xString = s.substring(0,i);
 			String yString = s.substring(i+1);
@@ -112,22 +113,19 @@ public class Vodja {
 				x = Integer.parseInt(xString);
 				y = Integer.parseInt(yString);		
 			} catch (NumberFormatException e) {
-				System.out.println("Napacen format"); continue; 
+				System.out.println("Napačen format"); continue; 
 			}
 			if (x < 0 || x >= Igra.N || y < 0 || y >= Igra.N){
-				System.out.println("Napacen format"); continue; 			
+				System.out.println("Napačen format"); continue; 			
 			}
 			Poteza poteza = new Poteza(x,y);
-			if (igra.odigraj(poteza)) {
-				igra.plosca_izpis(igra.getPlosca());
-				return poteza;}
-			else System.out.println(poteza + " ni mozna");
+			if (igra.odigraj(poteza)) return poteza;
+			else System.out.println(poteza + " ni možna");
 		}
 	}
 	
-	//da vidiva katere poteze so sploh na voljo
-	public static void polje_izpis(Polje[][] polje) {
-		for (Polje[] polja_i : polje) {
+	public static void plosca_izpis(Polje[][] plosca) {
+		for (Polje[] polja_i : plosca) {
 			for (Polje polja_j : polja_i) {
 				if (polja_j == Polje.CRNO) {
 					System.out.print("B");
