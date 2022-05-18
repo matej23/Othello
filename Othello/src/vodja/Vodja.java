@@ -3,15 +3,17 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.IOException;
 
-import java.util.Random;
 import java.util.Set;
+
+import inteligenca.Inteligenca;
+
 import java.util.Map;
 import java.util.EnumMap;
 import java.util.LinkedList;
-import java.util.List;
 
 import logika.Igra;
 import logika.Igralec;
+import logika.Plosca;
 import logika.Polje;
 import splosno.Poteza;
 
@@ -23,27 +25,44 @@ public class Vodja {
 	
 	private static Map<Igralec,VrstaIgralca> vrstaIgralca;
 	
+	public static Inteligenca rac1;
+	public static Inteligenca rac2;
+	
+	
 	public static void igramo () throws IOException {
 		while (true) {
 			System.out.println("Nova igra. Prosim, da izberete:");
 			System.out.println(" 1 - B clovek, W racunalnik");
 			System.out.println(" 2 - B racunalnik, W clovek");
 			System.out.println(" 3 - B clovek, W clovek");
-			System.out.println(" 4 - izhod");
+			System.out.println(" 4 - B racunalnik, W racunalnik");
+			System.out.println(" 5 - izhod");
 			String s = r.readLine();
 			if (s.equals("1")) {
 				vrstaIgralca = new EnumMap<Igralec,VrstaIgralca>(Igralec.class);
 				vrstaIgralca.put(Igralec.CRNI, VrstaIgralca.C); 
-				vrstaIgralca.put(Igralec.BELI, VrstaIgralca.R); 			
+				vrstaIgralca.put(Igralec.BELI, VrstaIgralca.R); 
+				rac1 = null;
+				rac2 = new Inteligenca();
 			} else if (s.equals("2")) {
 				vrstaIgralca = new EnumMap<Igralec,VrstaIgralca>(Igralec.class);
 				vrstaIgralca.put(Igralec.CRNI, VrstaIgralca.R); 
-				vrstaIgralca.put(Igralec.BELI, VrstaIgralca.C); 			
+				vrstaIgralca.put(Igralec.BELI, VrstaIgralca.C); 		
+				rac1 = new Inteligenca();
+				rac2 = null;
 			} else if (s.equals("3")) {
 				vrstaIgralca = new EnumMap<Igralec,VrstaIgralca>(Igralec.class);
 				vrstaIgralca.put(Igralec.CRNI, VrstaIgralca.C); 
-				vrstaIgralca.put(Igralec.BELI, VrstaIgralca.C); 			
+				vrstaIgralca.put(Igralec.BELI, VrstaIgralca.C); 
+				rac1 = null;
+				rac2 = null;
 			} else if (s.equals("4")) {
+				vrstaIgralca = new EnumMap<Igralec,VrstaIgralca>(Igralec.class);
+				vrstaIgralca.put(Igralec.CRNI, VrstaIgralca.R); 
+				vrstaIgralca.put(Igralec.BELI, VrstaIgralca.R); 
+				rac1 = new Inteligenca();
+				rac2 = new Inteligenca();
+			} else if (s.equals("5")) {
 				System.out.println("Nasvidenje!");
 				break;
 			} else {
@@ -52,7 +71,7 @@ public class Vodja {
 			}
 			Igra igra = new Igra ();
 			igranje : while (true) {
-				switch (igra.stanje()) {
+				switch (igra.posodobiStanje()) {
 				case ZMAGA_CRNI: 
 					System.out.println("Zmagal je igralec CRNI");
 					break igranje;
@@ -79,13 +98,16 @@ public class Vodja {
 			}
 		}
 	}
-	
-	private static Random random = new Random ();
+
 	
 	public static Poteza racunalnikovaPoteza(Igra igra) {
-		List<Poteza> moznePoteze = new LinkedList<Poteza>(igra.poteze().keySet());
-		int randomIndex = random.nextInt(moznePoteze.size());
-		Poteza poteza = moznePoteze.get(randomIndex);
+		Poteza poteza = null;
+		if (igra.naPotezi() == Igralec.CRNI) {
+			poteza = rac1.izberiPotezo(igra);
+		}
+		else {
+			poteza = rac2.izberiPotezo(igra);
+		}
 		igra.odigraj(poteza);
 		return poteza;		
 	}
@@ -96,6 +118,9 @@ public class Vodja {
 			
 			plosca_izpis(igra.getPlosca());
 			poteze_izpis(igra.poteze());
+			System.out.print("\n");
+			System.out.println("stevilo belih zetonov:" + igra.plosca.steviloBelih);
+			System.out.println("stevilo crnih zetonov:" + igra.plosca.steviloCrnih);
 			System.out.print("\n");
 			
 			System.out.println("Igralec " + igralec +
@@ -124,8 +149,8 @@ public class Vodja {
 		}
 	}
 	
-	public static void plosca_izpis(Polje[][] plosca) {
-		for (Polje[] polja_i : plosca) {
+	public static void plosca_izpis(Plosca plosca) {
+		for (Polje[] polja_i : plosca.plosca) {
 			for (Polje polja_j : polja_i) {
 				if (polja_j == Polje.CRNO) {
 					System.out.print("B");
@@ -142,17 +167,17 @@ public class Vodja {
 	}
 	
 	public static void poteze_izpis(Map<Poteza, LinkedList<Poteza>> moznosti) {
-		Set<Poteza> set_poteze = moznosti.keySet();
+		Set<Poteza> mnozicaPotez = moznosti.keySet();
 		LinkedList<Poteza> poteze = new LinkedList<Poteza>();
-		poteze.addAll(set_poteze);
+		poteze.addAll(mnozicaPotez);
 		for (Poteza poteza : poteze) {
 			System.out.print("\n");
 			System.out.print(poteza.toString()+ "\n");
 			
-			System.out.print("POSLEDICE:  ");
-			LinkedList<Poteza> posledice = moznosti.get(poteza);
-			for (Poteza posledica_poteze : posledice) {
-				System.out.print(posledica_poteze.toString()+",  \n");
+			System.out.print("Obrnjeni zetoni:  ");
+			LinkedList<Poteza> obrnjeniZetoni = moznosti.get(poteza);
+			for (Poteza obrnjen : obrnjeniZetoni) {
+				System.out.print(obrnjen.toString()+",  \n");
 			}
 			System.out.print("***********************************");
 		}
