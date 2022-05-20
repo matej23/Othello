@@ -1,5 +1,6 @@
 package inteligenca;
 
+
 import logika.Igra;
 
 public final class TreeEntry {
