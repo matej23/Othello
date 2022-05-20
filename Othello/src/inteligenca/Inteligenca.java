@@ -11,6 +11,7 @@ public class Inteligenca extends splosno.KdoIgra {
 	}
 	
 	public Poteza izberiPotezo(Igra igra) {
-		return MCTS.main(igra);
+		MCTS mcts = new MCTS(igra);
+		return mcts.main(igra);
 	}
 }

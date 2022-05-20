@@ -69,7 +69,7 @@ public class MCTS {
 	// UPAM, DA JE TO PRAV
 	
 	public static void simulacija(Igra igra, Poteza poteza) {
-		Igra kopijaIgre = igra;
+		Igra kopijaIgre = new Igra(igra.plosca, igra.naPotezi(), igra.stanje);
 		Igralec igralec = kopijaIgre.naPotezi();
 		TreeIndex indeks = new TreeIndex(new TreeIndex(), poteza);
 		while (kopijaIgre.stanje == Stanje.V_TEKU) {
@@ -77,8 +77,7 @@ public class MCTS {
 				Poteza nakljucna = nakljucnaPoteza(kopijaIgre.moznePoteze());
 				kopijaIgre.odigraj(nakljucna);
 			}
-			kopijaIgre.posodobiStanje();
-			System.out.print("1");
+			kopijaIgre.stanje = kopijaIgre.posodobiStanje();
 		}
 		TreeEntry vnos = new TreeEntry(kopijaIgre);
 		vnos.poskusi = 1;
@@ -93,32 +92,44 @@ public class MCTS {
 		else if (stanje == Stanje.NEODLOCENO) return 0.5;
 		else return 0;
 	}
-
 	public static TreeIndex najdiNajboljsegaOtroka(Igra igra) {
 		TreeIndex maksimalen = new TreeIndex();
 		for (TreeIndex i : drevo.keySet()) {
-			if (vrednostUCT(i, drevo.get(i)) > (drevo.get(maksimalen).zmage / drevo.get(maksimalen).poskusi)) {
-				maksimalen = i;
-			}
+			maksimalen = i;
 		}
 		return maksimalen;
+	
 	}
+//	public static TreeIndex najdiNajboljsegaOtroka(Igra igra) {
+//		TreeIndex maksimalen = new TreeIndex();
+//		for (TreeIndex i : drevo.keySet()) {
+//			if (vrednostUCT(i, drevo.get(i)) > (drevo.get(maksimalen).zmage / drevo.get(maksimalen).poskusi)) {
+//				maksimalen = i;
+//			}
+//		}
+//		return maksimalen;
+//	}
 	
 	public static double vrednostUCT (TreeIndex i,TreeEntry e) {
 			return e.zmage / e.poskusi + Math.sqrt(2 * Math.log(drevo.get(i.parent()).poskusi) / e.poskusi);
 		}
 	
-	public static Poteza main(Igra igra) {
+	public Poteza main(Igra igra) {
 		long zacetek = System.currentTimeMillis();
-		Igra kopijaIgre = igra;
+		Igra kopijaIgre = new Igra(igra.plosca, igra.naPotezi(), igra.stanje);
 		TreeIndex otrok = null;
 		while (zacetek + cas > System.currentTimeMillis()) {
 			if (!kopijaIgre.poteze().isEmpty()) {
 				otrociPregled(kopijaIgre);
 				otrok = najdiNajboljsegaOtroka(kopijaIgre);
-				kopijaIgre = drevo.get(otrok).igra;
+				Igra kopija = drevo.get(otrok).igra;
+				kopijaIgre = new Igra(kopija.plosca, kopija.naPotezi(), kopija.stanje);
 			}
-			else break;
+//			else {
+//				System.out.print("zakaj smo sploh tukaj ?");
+//				break;
+//			}
+			
 		}
 		if (otrok == null) {
 			System.out.print("ne naredi otroka");

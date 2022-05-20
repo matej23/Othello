@@ -29,14 +29,17 @@ public class Igra {
 	public Plosca getPlosca() {
 		return plosca;
 	}
-	
+	//klonirana verzija
 	public Igra(Plosca plosca, Igralec naPotezi, Stanje stanje) {
 		Plosca ploscaKopija = new Plosca();
-//		for (int i = 0; i < 8; i++) {
-//			for(int j = 0; j < 8; j++) {
-//				ploscaKopija[i][j] = plosca.plosca[i][j];
-//			}
-//		}
+		for (int i = 0; i < N; i++) {
+			for(int j = 0; j < N; j++) {
+				ploscaKopija.plosca[i][j] = plosca.plosca[i][j];
+			}
+		}
+		ploscaKopija.steviloBelih = plosca.steviloBelih;
+		ploscaKopija.steviloCrnih = plosca.steviloCrnih;
+		
 		this.plosca = ploscaKopija;
 		this.naPotezi = naPotezi;
 		this.stanje = stanje;
@@ -257,19 +260,19 @@ public class Igra {
 	}
 	
 	// pomozna funkcija za poteze()
-	
-	public void dodajSmerVSlovar (Map<Poteza, LinkedList<Poteza>> poteze, LinkedList<Poteza> smer, int i, int j) {
-		if (poteze.get(new Poteza(i,j)) == null) {
-			poteze.put(new Poteza(i, j), smer);
-		}
-		else {
-			LinkedList<Poteza> obstojeci = poteze.get(new Poteza(i, j));
-			for (Poteza poteza : smer) {
-				obstojeci.add(poteza);
-			}
-			poteze.put(new Poteza(i,j), obstojeci);
-		}
-	}
+//	
+//	public void dodajSmerVSlovar (Map<Poteza, LinkedList<Poteza>> poteze, LinkedList<Poteza> smer, int i, int j) {
+//		if (poteze.get(new Poteza(i,j)) == null) {
+//			poteze.put(new Poteza(i, j), smer);
+//		}
+//		else {
+//			LinkedList<Poteza> obstojeci = poteze.get(new Poteza(i, j));
+//			for (Poteza poteza : smer) {
+//				obstojeci.add(poteza);
+//			}
+//			poteze.put(new Poteza(i,j), obstojeci);
+//		}
+//	}
 	
 	
 	public LinkedList<Poteza> moznePoteze() {
@@ -297,9 +300,12 @@ public class Igra {
 			else {
 				Igra klonIgra = new Igra(plosca, naPotezi.nasprotnik(), stanje);
 				
+				//za nasprotnika so se poteze
 				if (!klonIgra.poteze().isEmpty()) {
+					naPotezi = naPotezi.nasprotnik();
 					return Stanje.V_TEKU;
 				}
+				//za nasprotnika ni vec potez
 				else {
 					if (plosca.steviloCrnih > plosca.steviloBelih) return Stanje.ZMAGA_CRNI;
 					else if (plosca.steviloBelih > plosca.steviloCrnih) return Stanje.ZMAGA_BELI;
