@@ -108,7 +108,7 @@ public class Vodja {
 		else {
 			poteza = rac2.izberiPotezo(igra);
 		}
-		igra.odigraj(poteza);
+		igra.odigrajZaMcts(poteza);
 		return poteza;		
 	}
 

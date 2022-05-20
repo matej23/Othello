@@ -1,6 +1,7 @@
 package inteligenca;
 
 import java.util.HashMap;
+import java.util.LinkedList;
 //import java.util.LinkedList;
 import java.util.Random;
 
@@ -29,26 +30,36 @@ public class MCTS {
 
 	}
 	
-	public static Poteza nakljucnaPoteza(Igra igra) {
-		if (igra.moznePoteze().size() == 0) {
+	public static Poteza nakljucnaPoteza(LinkedList<Poteza> poteze) {
+		if (poteze.size() == 0) {
 			System.out.print("OJOJJJ");
 			return null;
 		}
 		else {
-			int randomIndex = random.nextInt(igra.moznePoteze().size());
-			return igra.moznePoteze().get(randomIndex); 
+			int randomIndex = random.nextInt(poteze.size());
+			return poteze.get(randomIndex); 
 		}
 	}
-
-
 	public static void otrociPregled(Igra igra) {
-		while (!igra.moznePoteze().isEmpty()) {
-			Poteza nakljucnaPoteza = nakljucnaPoteza(igra);
-			simulacija(igra, nakljucnaPoteza);
-			igra.moznePoteze().remove(nakljucnaPoteza);
-		}
+		LinkedList<Poteza> klon = (LinkedList<Poteza>) igra.moznePoteze().clone();
+		LinkedList<Poteza> uporabljene = new LinkedList<Poteza>();
 		
+		while (uporabljene.size() < igra.moznePoteze().size()) {
+			Poteza nakljucnaPoteza = nakljucnaPoteza(klon);
+			simulacija(igra, nakljucnaPoteza);
+			klon.remove(nakljucnaPoteza);
+			uporabljene.add(nakljucnaPoteza);
+		}
 	}
+	
+//	public static void otrociPregled(Igra igra) {
+//		while (!igra.moznePoteze().isEmpty()) {
+//			Poteza nakljucnaPoteza = nakljucnaPoteza(igra);
+//			simulacija(igra, nakljucnaPoteza);
+//			igra.moznePoteze().remove(nakljucnaPoteza);
+//		}
+//		
+//	}
 	
 	// UPAM, DA JE TO PRAV
 	
@@ -57,7 +68,7 @@ public class MCTS {
 		Igralec igralec = kopijaIgre.naPotezi();
 		TreeIndex indeks = new TreeIndex(new TreeIndex(), poteza);
 		while (kopijaIgre.stanje == Stanje.V_TEKU) {
-			Poteza nakljucna = nakljucnaPoteza(kopijaIgre);
+			Poteza nakljucna = nakljucnaPoteza(kopijaIgre.moznePoteze());
 			kopijaIgre.odigrajZaMcts(nakljucna);
 		}
 		TreeEntry vnos = new TreeEntry(kopijaIgre);
@@ -98,6 +109,7 @@ public class MCTS {
 				otrok = najdiNajboljsegaOtroka(kopijaIgre);
 				kopijaIgre = drevo.get(otrok).igra;
 			}
+			else break;
 		}
 		if (otrok == null) {
 			System.out.print("ne naredi otroka");
