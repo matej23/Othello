@@ -31,26 +31,31 @@ public class MCTS {
 	}
 	
 	public static Poteza nakljucnaPoteza(LinkedList<Poteza> poteze) {
-		if (poteze.size() == 0) {
-			System.out.print("OJOJJJ");
-			return null;
-		}
-		else {
-			int randomIndex = random.nextInt(poteze.size());
-			return poteze.get(randomIndex); 
-		}
+		int dolzina = poteze.size();
+		assert (dolzina > 0);
+		return poteze.getFirst();
 	}
+//	public static Poteza nakljucnaPoteza(LinkedList<Poteza> poteze) {
+//		assert (poteze.size() > 0);
+//		int randomIndex = random.nextInt(poteze.size());
+//		return poteze.get(randomIndex); 
+//	}
 	public static void otrociPregled(Igra igra) {
-		LinkedList<Poteza> klon = (LinkedList<Poteza>) igra.moznePoteze().clone();
-		LinkedList<Poteza> uporabljene = new LinkedList<Poteza>();
-		
-		while (uporabljene.size() < igra.moznePoteze().size()) {
-			Poteza nakljucnaPoteza = nakljucnaPoteza(klon);
-			simulacija(igra, nakljucnaPoteza);
-			klon.remove(nakljucnaPoteza);
-			uporabljene.add(nakljucnaPoteza);
+		for (Poteza poteza : igra.moznePoteze()) {
+			simulacija(igra, poteza);
 		}
 	}
+//	public static void otrociPregled(Igra igra) {
+//		LinkedList<Poteza> klon = (LinkedList<Poteza>) igra.moznePoteze().clone();
+//		LinkedList<Poteza> uporabljene = new LinkedList<Poteza>();
+//		
+//		while (uporabljene.size() < igra.moznePoteze().size()) {
+//			Poteza nakljucnaPoteza = nakljucnaPoteza(klon);
+//			simulacija(igra, nakljucnaPoteza);
+//			klon.remove(nakljucnaPoteza);
+//			uporabljene.add(nakljucnaPoteza);
+//		}
+//	}
 	
 //	public static void otrociPregled(Igra igra) {
 //		while (!igra.moznePoteze().isEmpty()) {
@@ -68,8 +73,13 @@ public class MCTS {
 		Igralec igralec = kopijaIgre.naPotezi();
 		TreeIndex indeks = new TreeIndex(new TreeIndex(), poteza);
 		while (kopijaIgre.stanje == Stanje.V_TEKU) {
+			if (kopijaIgre.moznePoteze().size() > 0) {
 			Poteza nakljucna = nakljucnaPoteza(kopijaIgre.moznePoteze());
 			kopijaIgre.odigraj(nakljucna);
+			}
+			else {
+				System.out.print("ni vec potez");
+			}
 		}
 		TreeEntry vnos = new TreeEntry(kopijaIgre);
 		vnos.poskusi = 1;
