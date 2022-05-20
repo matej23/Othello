@@ -11,6 +11,6 @@ public class Inteligenca extends splosno.KdoIgra {
 	}
 	
 	public Poteza izberiPotezo(Igra igra) {
-		return MonteCarlo.MCTS(igra);
+		return MCTS.main(igra);
 	}
 }

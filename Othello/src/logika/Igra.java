@@ -2,7 +2,6 @@ package logika;
 
 import java.util.HashMap;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.Map;
 
 import splosno.Poteza;
@@ -267,8 +266,8 @@ public class Igra {
 	}
 	
 	
-	public List<Poteza> moznePoteze() {
-		List<Poteza> moznePoteze = new LinkedList<Poteza>(poteze().keySet());
+	public LinkedList<Poteza> moznePoteze() {
+		LinkedList<Poteza> moznePoteze = new LinkedList<Poteza>(poteze().keySet());
 		return moznePoteze;
 	}
 	
