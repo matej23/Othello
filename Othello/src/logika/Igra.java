@@ -309,18 +309,5 @@ public class Igra {
 		return true;
 	}
 	
-	// za razliko od prejsnje funkcije ne vraca nicesar 
-	public void odigrajZaMcts(Poteza poteza) {
-		LinkedList<Poteza> obrnjeniZetoni = poteze().get(poteza);
-		if (!poteze().isEmpty()) {
-			if (obrnjeniZetoni != null) {
-				plosca.odigrajPotezo(poteza, naPotezi);
-				zadnjaPoteza = poteza;
-				for (Poteza obrnjen : obrnjeniZetoni) plosca.obrniZeton(obrnjen, naPotezi);
-			}
-		}
-		naPotezi = naPotezi.nasprotnik();
-	}
-
 }
 	
