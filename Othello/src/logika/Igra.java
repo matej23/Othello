@@ -15,16 +15,11 @@ public class Igra {
 	
 	private Igralec naPotezi;
 	
-	public Poteza zadnjaPoteza;
-	
-	private boolean obaImataMoznePoteze;
 	
 	public Igra() {
 		plosca = new Plosca();
 		naPotezi = Igralec.CRNI;
 		stanje = Stanje.V_TEKU;
-		obaImataMoznePoteze = true;
-		zadnjaPoteza = null;
 	}
 	
 	public Igralec naPotezi() {
@@ -34,7 +29,18 @@ public class Igra {
 	public Plosca getPlosca() {
 		return plosca;
 	}
-
+	
+	public Igra(Plosca plosca, Igralec naPotezi, Stanje stanje) {
+		Plosca ploscaKopija = new Plosca();
+//		for (int i = 0; i < 8; i++) {
+//			for(int j = 0; j < 8; j++) {
+//				ploscaKopija[i][j] = plosca.plosca[i][j];
+//			}
+//		}
+		this.plosca = ploscaKopija;
+		this.naPotezi = naPotezi;
+		this.stanje = stanje;
+	}
 	
 	/*
 	funkcija najde vse možne poteze in jih zapiše v slovar,
@@ -276,23 +282,32 @@ public class Igra {
 	}
 	
 	public Stanje posodobiStanje() {
-		// ce igralec na potezi ne more nikamor postaviti zetona
-		if ((obaImataMoznePoteze) && (poteze().isEmpty())) {
-				obaImataMoznePoteze = false;
-				return Stanje.V_TEKU;	
-			}
-		// ce plosca se ni polna
-		else if (!aliJePloscaPolna()) {
-			obaImataMoznePoteze = true;
-			return Stanje.V_TEKU;
-		}
-		// plosca je polna ali pa igralca zaporedoma nista mogla igrati poteze
-		else {
+		if (aliJePloscaPolna()) {
 			if (plosca.steviloCrnih > plosca.steviloBelih) return Stanje.ZMAGA_CRNI;
 			else if (plosca.steviloBelih > plosca.steviloCrnih) return Stanje.ZMAGA_BELI;
 			else return Stanje.NEODLOCENO;
 		}
-	}
+		//plosca ni polna
+		else {
+			//imamo poteze na voljo za igralca
+			if (!poteze().isEmpty()) { 
+				return Stanje.V_TEKU;
+			}
+			//nimamo potez na voljo
+			else {
+				Igra klonIgra = new Igra(plosca, naPotezi.nasprotnik(), stanje);
+				
+				if (!klonIgra.poteze().isEmpty()) {
+					return Stanje.V_TEKU;
+				}
+				else {
+					if (plosca.steviloCrnih > plosca.steviloBelih) return Stanje.ZMAGA_CRNI;
+					else if (plosca.steviloBelih > plosca.steviloCrnih) return Stanje.ZMAGA_BELI;
+					else return Stanje.NEODLOCENO;
+				}
+			}
+		}
+	}	
 		
 	
 	public boolean odigraj(Poteza poteza) {
@@ -301,7 +316,6 @@ public class Igra {
 			if (obrnjeniZetoni == null) return false;
 			else {
 				plosca.odigrajPotezo(poteza, naPotezi);
-				zadnjaPoteza = poteza;
 				for (Poteza obrnjen : obrnjeniZetoni) plosca.obrniZeton(obrnjen, naPotezi);
 			}
 		}

@@ -74,12 +74,11 @@ public class MCTS {
 		TreeIndex indeks = new TreeIndex(new TreeIndex(), poteza);
 		while (kopijaIgre.stanje == Stanje.V_TEKU) {
 			if (kopijaIgre.moznePoteze().size() > 0) {
-			Poteza nakljucna = nakljucnaPoteza(kopijaIgre.moznePoteze());
-			kopijaIgre.odigraj(nakljucna);
+				Poteza nakljucna = nakljucnaPoteza(kopijaIgre.moznePoteze());
+				kopijaIgre.odigraj(nakljucna);
 			}
-			else {
-				System.out.print("ni vec potez");
-			}
+			kopijaIgre.posodobiStanje();
+			System.out.print("1");
 		}
 		TreeEntry vnos = new TreeEntry(kopijaIgre);
 		vnos.poskusi = 1;
