@@ -109,6 +109,9 @@ public class Vodja {
 			poteza = rac2.izberiPotezo(igra);
 		}
 		igra.odigraj(poteza);
+		System.out.print("\n");
+		plosca_izpis(igra.plosca);
+		System.out.print("\n");
 		return poteza;		
 	}
 
