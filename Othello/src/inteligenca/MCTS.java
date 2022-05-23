@@ -13,10 +13,9 @@ import splosno.Poteza;
 public class MCTS {
 
 	public static HashMap<TreeIndex, TreeEntry> drevo;
-	// slovar vsebuje seznam potez od korena do izbranega vozlisca
 	
 	private static Random random = new Random ();
-	private static int cas = 2400;
+	private static int cas = 4000;
 	
 	public Igralec naPotezi;
 	
@@ -27,22 +26,14 @@ public class MCTS {
 
 	}
 	
-//	public static Poteza nakljucnaPoteza(LinkedList<Poteza> poteze) {
-//		int dolzina = poteze.size();
-//		assert (dolzina > 0);
-//		return poteze.getFirst();
-//	}
 	public static Poteza nakljucnaPoteza(LinkedList<Poteza> poteze) {
 		assert (poteze.size() > 0);
 		int randomIndex = random.nextInt(poteze.size());
 		return poteze.get(randomIndex); 
 	}
-//	public static void otrociPregled(Igra igra) {
-//		for (Poteza poteza : igra.moznePoteze()) {
-//			simulacija(igra, poteza);
-//		}
-//	}
+
 	public static void otrociPregled(Igra igra, TreeIndex i) {
+		@SuppressWarnings("unchecked")
 		LinkedList<Poteza> klon = (LinkedList<Poteza>) igra.moznePoteze().clone();
 		
 		while (!klon.isEmpty()) {
@@ -52,11 +43,10 @@ public class MCTS {
 		}
 	}
 	
-	
 	public static void simulacija(Igra igra, Poteza poteza, TreeIndex i) {
 		Igra kopijaIgre = new Igra(igra.plosca, igra.naPotezi(), igra.stanje);
-		Igralec igralec = kopijaIgre.naPotezi();
-		TreeIndex indeks = new TreeIndex(i, poteza);
+		//Igralec igralec = kopijaIgre.naPotezi();
+		TreeIndex indeks = new TreeIndex(i, poteza, kopijaIgre.naPotezi());
 		while (kopijaIgre.stanje == Stanje.V_TEKU) {
 			if (kopijaIgre.moznePoteze().size() > 0) {
 				Poteza nakljucna = nakljucnaPoteza(kopijaIgre.moznePoteze());
@@ -64,11 +54,30 @@ public class MCTS {
 			}
 			kopijaIgre.stanje = kopijaIgre.posodobiStanje();
 		}
-		TreeEntry vnos = new TreeEntry(kopijaIgre);
-		vnos.poskusi = 1;
-		vnos.zmage = stanjeVRezultat(kopijaIgre.stanje, igralec);
-		drevo.put(indeks, vnos);
+		nazajDoKorena(kopijaIgre, indeks);
+//		TreeEntry vnos = new TreeEntry(kopijaIgre);
+//		vnos.poskusi = 1;
+//		vnos.zmage = stanjeVRezultat(kopijaIgre.stanje, igralec);
+//		drevo.put(indeks, vnos);
 		
+	}
+	
+	public static void nazajDoKorena(Igra igra, TreeIndex treei) {
+		TreeIndex clone = new TreeIndex(treei);
+		while (!clone.isRoot()) {
+			if (drevo.containsKey(treei)) {
+				drevo.get(treei).poskusi += 1;
+				double rez = stanjeVRezultat(igra.stanje, treei.zadnjiIgralec());
+				drevo.get(treei).zmage += rez;
+			}
+			else {
+				TreeEntry vnos = new TreeEntry(igra);
+				vnos.poskusi = 1;
+				vnos.zmage = stanjeVRezultat(igra.stanje, treei.zadnjiIgralec());
+				drevo.put(treei, vnos);
+			}
+			clone = new TreeIndex(clone.parent());
+		}
 	}
 	
 	public static double stanjeVRezultat(Stanje stanje, Igralec igralec) {
@@ -115,16 +124,14 @@ public class MCTS {
 				Igra kopija = drevo.get(otrok).igra;
 				kopijaIgre = new Igra(kopija.plosca, kopija.naPotezi(), kopija.stanje);
 			}
-//			else {
-//				System.out.print("zakaj smo sploh tukaj ?");
-//				break;
-//			}
 			
 		}
+		
 		if (otrok == null) {
 			System.out.print("ne naredi otroka");
 			return null;
 		}
+		
 		else {
 			return otrok.asList().get(0);
 		}
