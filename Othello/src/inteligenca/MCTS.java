@@ -2,7 +2,6 @@ package inteligenca;
 
 import java.util.HashMap;
 import java.util.LinkedList;
-//import java.util.LinkedList;
 import java.util.Random;
 
 import logika.Igra;
@@ -25,13 +24,13 @@ public class MCTS {
 		drevo = new HashMap<TreeIndex, TreeEntry>();
 
 	}
-	
 	public static Poteza nakljucnaPoteza(LinkedList<Poteza> poteze) {
 		assert (poteze.size() > 0);
 		int randomIndex = random.nextInt(poteze.size());
 		return poteze.get(randomIndex); 
 	}
 
+	//izvede simulacijo igre za vsakega otroka
 	public static void otrociPregled(Igra igra, TreeIndex i) {
 		@SuppressWarnings("unchecked")
 		LinkedList<Poteza> klon = (LinkedList<Poteza>) igra.moznePoteze().clone();
@@ -45,23 +44,40 @@ public class MCTS {
 	
 	public static void simulacija(Igra igra, Poteza poteza, TreeIndex i) {
 		Igra kopijaIgre = new Igra(igra.plosca, igra.naPotezi(), igra.stanje);
-		//Igralec igralec = kopijaIgre.naPotezi();
 		TreeIndex indeks = new TreeIndex(i, poteza, kopijaIgre.naPotezi());
+		Poteza nakljucna;
+		
+		//zelimo izbrati kot, ce je to le mozno
 		while (kopijaIgre.stanje == Stanje.V_TEKU) {
-			if (kopijaIgre.moznePoteze().size() > 0) {
-				Poteza nakljucna = nakljucnaPoteza(kopijaIgre.moznePoteze());
+			if (!kopijaIgre.moznePoteze().isEmpty()) {
+				Poteza levoZgoraj = new Poteza(0, 0);
+				Poteza desnoZgoraj = new Poteza(0, 7);
+				Poteza levoSpodaj = new Poteza(7, 0);
+				Poteza desnoSpodaj = new Poteza(7, 7);
+				
+				if (kopijaIgre.moznePoteze().contains(desnoSpodaj)) {
+					nakljucna = desnoSpodaj;
+				}				
+				else if (kopijaIgre.moznePoteze().contains(desnoZgoraj)) {
+					nakljucna = desnoZgoraj;
+				}
+				else if (kopijaIgre.moznePoteze().contains(levoZgoraj)) {
+					nakljucna = levoZgoraj;
+				}
+				else if (kopijaIgre.moznePoteze().contains(levoSpodaj)) {
+					nakljucna = levoSpodaj;
+				}
+				else {
+					nakljucna  = nakljucnaPoteza(kopijaIgre.moznePoteze());
+				}
 				kopijaIgre.odigraj(nakljucna);
 			}
 			kopijaIgre.stanje = kopijaIgre.posodobiStanje();
 		}
 		nazajDoKorena(kopijaIgre, indeks);
-//		TreeEntry vnos = new TreeEntry(kopijaIgre);
-//		vnos.poskusi = 1;
-//		vnos.zmage = stanjeVRezultat(kopijaIgre.stanje, igralec);
-//		drevo.put(indeks, vnos);
-		
 	}
 	
+	//vnesemo rezultate simuliranih iger do starsev
 	public static void nazajDoKorena(Igra igra, TreeIndex treei) {
 		TreeIndex clone = new TreeIndex(treei);
 		while (!clone.isRoot()) {
@@ -87,7 +103,7 @@ public class MCTS {
 		else return 0;
 	}
 
-	
+	//izbere najprimernejsega otroka glede na njegovo UCT vrednost
 	public static TreeIndex najdiNajboljsegaOtroka(Igra igra) {
 		TreeIndex maksimalen = new TreeIndex();
 		int j = 0;
@@ -97,7 +113,6 @@ public class MCTS {
 					maksimalen = i;
 				}
 			}
-			// samo na zacetku, ko je j = 0, vzamemo za maksimalen prvi kljuc v drevesu
 			else {
 				maksimalen = i;
 				j++;
@@ -113,6 +128,7 @@ public class MCTS {
 		else return e.zmage / e.poskusi;
 	}
 	
+	//glavna funkcija za zagon MCTS
 	public Poteza main(Igra igra) {
 		long zacetek = System.currentTimeMillis();
 		Igra kopijaIgre = new Igra(igra.plosca, igra.naPotezi(), igra.stanje);
@@ -135,13 +151,7 @@ public class MCTS {
 		else {
 			return otrok.asList().get(0);
 		}
-	}
-	
-
-	
-	
-		
-		
+	}	
 }
 	
 	

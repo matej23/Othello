@@ -6,8 +6,7 @@ import splosno.Poteza;
 public class Inteligenca extends splosno.KdoIgra {
 
 	public Inteligenca() {
-		// ime skupine, haha:
-		super(":(");
+		super("NUTRIJE <3");
 	}
 	
 	public Poteza izberiPotezo(Igra igra) {
